@@ -2,9 +2,19 @@
 
 cybozu.com にて提供されている [kintone REAT API](https://cybozudev.zendesk.com/hc/ja/categories/200147600-kintone-API) が使いやすくなる（予定の）PHP製のライブラリです。
 
-## 使用条件
+## 必要条件
 
 PHP 5.4+
+
+## インストール
+
+現在のところ、まだベータ版です。
+
+### コンポーザー
+
+    "require": {
+        "hissy/kintone-php": "dev-master"
+    }
 
 ## 使い方
 
