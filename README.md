@@ -112,6 +112,16 @@ if ($res->isSuccess()) {
 }
 ```
 
+## ToDo
+
+* Object
+    * Record (PUT)
+    * RecordItem - レコード１行に相当、GET, POST, PUT, DELETEで共通で使いたい
+    * File (GET)
+    * File (POST)
+    * Space (GET)
+* UnitTest
+
 ## ライセンス
 
 MITライセンス
