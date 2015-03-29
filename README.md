@@ -125,6 +125,8 @@ if ($res->isSuccess()) {
 ## ToDo
 
 * Object
+    * Apps
+    * Records
     * Record (PUT)
     * RecordItem - レコード１行に相当、GET, POST, PUT, DELETEで共通で使いたい
     * File (GET)
