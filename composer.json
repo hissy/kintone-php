@@ -1,7 +1,7 @@
 {
     "name": "hissy/kintone-php",
     "description": "The Kintone SDK for PHP provides a interface to easy access to kintone api.",
-    "version": "0.1.1",
+    "version": "0.0.1",
     "license": "MIT",
     "authors": [
         {
