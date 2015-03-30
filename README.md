@@ -1,6 +1,6 @@
 # The Kintone SDK for PHP
 
-cybozu.com にて提供されている [kintone REAT API](https://cybozudev.zendesk.com/hc/ja/categories/200147600-kintone-API) が使いやすくなる（予定の）PHP製のライブラリです。
+cybozu.com にて提供されている [kintone REST API](https://cybozudev.zendesk.com/hc/ja/categories/200147600-kintone-API) が使いやすくなる（予定の）PHP製のライブラリです。
 
 ## 必要条件
 
