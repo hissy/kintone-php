@@ -1,5 +1,7 @@
 # The Kintone SDK for PHP
 
+![build](https://travis-ci.org/hissy/kintone-php.svg?branch=master)
+
 cybozu.com にて提供されている [kintone REST API](https://cybozudev.zendesk.com/hc/ja/categories/200147600-kintone-API) が使いやすくなる（予定の）PHP製のライブラリです。
 
 ## 必要条件
@@ -132,7 +134,6 @@ if ($res->isSuccess()) {
     * File (GET)
     * File (POST)
     * Space (GET)
-* UnitTest
 
 ## ライセンス
 
