@@ -51,26 +51,21 @@ class Single extends FieldType
     public function noLabel()
     {
         if (isset($this->properties['noLabel'])) {
-            return $this->properties['noLabel'];
+            return ($this->properties['noLabel'] == 'true') ? true : false;
         }
     }
     
     public function isRequired()
     {
         if (isset($this->properties['required'])) {
-            if ($this->properties['required'] == "true") {
-                return true;
-            }
+            return ($this->properties['required'] == 'true') ? true : false;
         }
-        return false;
     }
     
     public function isUnique()
     {
         if (isset($this->properties['unique'])) {
-            if ($this->properties['unique'] == "true") {
-                return true;
-            }
+            return ($this->properties['unique'] == 'true') ? true : false;
         }
         return false;
     }
