@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/hissy/kintone-php.svg?branch=master)](https://travis-ci.org/hissy/kintone-php)
 
-cybozu.com にて提供されている [kintone REST API](https://cybozudev.zendesk.com/hc/ja/categories/200147600-kintone-API) が使いやすくなるPHP製のライブラリです。
+cybozu.com にて提供されている [kintone REST API](https://cybozudev.zendesk.com/hc/ja/categories/200147600-kintone-API) を使いやすくするPHP製のライブラリです。
 
 ## 必要条件
 
@@ -59,75 +59,7 @@ echo $res->getValue('name'); // 結果は App を使った場合と同じ
 
 ```
 
-### フォーム設計情報の取得
-
-```php
-require 'vendor/autoload.php';
-
-use Kintone\Request;
-use Kintone\Form\Form;
-
-// 初期化
-$subdomain = '012ab';
-$apitoken  = 'BuBNIwbRRaUvr33nWXcfUZ5VhaFsJxN0xH4NPN92';
-$request = new Request($subdomain,$apitoken);
-
-// フォーム設計情報の取得
-$properties = (new Form($request))->getByID($appID)->getProperties();
-$fields = new FieldList($properties);
-
-foreach($fields as $field) {
-    // フィールドコードの取得
-    echo $field->getFieldCode();
-    
-    // サブフィールドかどうか
-    if ($field->isMultiple()) {
-        foreach ($field as $subfield) {
-            // フィールドラベルの取得
-            echo $subfield->getLabel();
-            // フィールドタイプの取得
-            echo $subfield->getFieldType();
-        }
-    } else {
-        echo $field->getLabel();
-        echo $field->getFieldType();
-    }
-}
-```
-
-### フォーム送信
-
-```php
-require 'vendor/autoload.php';
-
-use Kintone\Request;
-use Kintone\Record\Record;
-
-// 初期化
-$subdomain = '012ab';
-$apitoken  = 'BuBNIwbRRaUvr33nWXcfUZ5VhaFsJxN0xH4NPN92';
-$request = new Request($subdomain,$apitoken);
-
-// 投稿データ
-$post_data = ['example_field_code' => ['value' => "Example Value"]];
-
-// 投稿データを送信
-$res = (new Record($request))->postRecord($appID, $post_data);
-
-if ($res->isSuccess()) {
-    // レコードID
-    echo $res->getId();
-    // リビジョン
-    echo $res->getRevision();
-}
-```
-
-## ToDo
-
-* Object
-    * Records
-    * File (GET)
-    * Space (GET)
+詳細はWikiをご覧ください。
 
 ## ライセンス
 
