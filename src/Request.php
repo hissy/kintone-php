@@ -2,6 +2,7 @@
 namespace Kintone;
 
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Post\PostFile;
 
 class Request
 {
@@ -32,6 +33,11 @@ class Request
         $this->subdomain = $subdomain;
         $this->token = $token;
         $this->client = $client;
+    }
+
+    public function getClient()
+    {
+        return $this->client;
     }
 
     public function get($url = null, array $options = [])
@@ -86,6 +92,14 @@ class Request
             $params['json'] = $options;
         }
         return $this->client->post($url . self::API_URL_EXT, $params);
+    }
+
+    public function postFile($url = null, PostFile $file)
+    {
+        $request = $this->client->createRequest('POST', $url . self::API_URL_EXT);
+        $postBody = $request->getBody();
+        $postBody->addFile($file);
+        return $this->client->send($request);
     }
 
     public function options($url = null, array $options = [])
