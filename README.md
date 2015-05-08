@@ -2,15 +2,13 @@
 
 [![Build Status](https://travis-ci.org/hissy/kintone-php.svg?branch=master)](https://travis-ci.org/hissy/kintone-php)
 
-cybozu.com にて提供されている [kintone REST API](https://cybozudev.zendesk.com/hc/ja/categories/200147600-kintone-API) が使いやすくなる（予定の）PHP製のライブラリです。
+cybozu.com にて提供されている [kintone REST API](https://cybozudev.zendesk.com/hc/ja/categories/200147600-kintone-API) が使いやすくなるPHP製のライブラリです。
 
 ## 必要条件
 
 PHP 5.4+
 
-## インストール
-
-現在のところ、まだベータ版です。
+## インストール方法
 
 ### コンポーザー
 
@@ -127,12 +125,8 @@ if ($res->isSuccess()) {
 ## ToDo
 
 * Object
-    * Apps
     * Records
-    * Record (PUT)
-    * RecordItem - レコード１行に相当、GET, POST, PUT, DELETEで共通で使いたい
     * File (GET)
-    * File (POST)
     * Space (GET)
 
 ## ライセンス
