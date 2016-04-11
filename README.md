@@ -1,4 +1,4 @@
-# The Kintone SDK for PHP
+# The kintone SDK for PHP
 
 [![Build Status](https://travis-ci.org/hissy/kintone-php.svg?branch=master)](https://travis-ci.org/hissy/kintone-php)
 
