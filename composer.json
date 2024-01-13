@@ -1,26 +1,36 @@
 {
     "name": "hissy/kintone-php",
     "description": "The Kintone SDK for PHP provides a interface to easy access to kintone api.",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "license": "MIT",
     "authors": [
         {
             "name": "Takuro Hishikawa",
-            "email": "hishikawa@concrete5.co.jp",
+            "email": "hishikawa@macareux.co.jp",
             "homepage": "https://github.com/hissy"
         }
     ],
     "require": {
-        "php": ">=5.4.0",
-        "guzzlehttp/guzzle": "~5.0"
+        "guzzlehttp/guzzle": "^7.8",
+        "ext-json": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.6.*"
+        "phpunit/phpunit": "^8.5.20",
+        "friendsofphp/php-cs-fixer": "^3.9"
+    },
+    "config": {
+        "platform": {
+            "php": "8.0"
+        }
     },
     "autoload": {
         "psr-4": {"Kintone\\": "src/"}
     },
     "autoload-dev": {
         "psr-4": {"Kintone\\Tests\\": "tests/"}
+    },
+    "scripts": {
+        "test": "phpunit",
+        "cs-fix": "php-cs-fixer fix"
     }
 }

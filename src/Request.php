@@ -1,113 +1,139 @@
 <?php
+
 namespace Kintone;
 
 use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Post\PostFile;
+use GuzzleHttp\Psr7\UploadedFile;
+use Psr\Http\Message\ResponseInterface;
 
 class Request
 {
-    const VERSION = '0.0.1';
-    const API_BASE_URL = 'https://{subdomain}.cybozu.com/k/{version}/';
-    const API_HOST = '{subdomain}.cybozu.com:443';
-    const API_URL_EXT = '.json';
+    public const API_BASE_URL = 'https://{subdomain}.cybozu.com/k/{version}/';
+    public const API_HOST = '{subdomain}.cybozu.com:443';
+    public const API_URL_EXT = '.json';
 
-    private $token = '';
-    private $subdomain = '';
-    private $client;
-    private $defaultOptions = ['allow_redirects' => false];
+    private string $token = '';
+    private string $subdomain = '';
+    private GuzzleClient $client;
+    private array $defaultOptions;
 
     public function __construct($subdomain, $token)
     {
-        $client = new GuzzleClient([
-            'base_url' => [self::API_BASE_URL, [
-                'subdomain' => $subdomain,
-                'version' => 'v1'
-            ]],
-            'defaults' => [
-                'headers' => [
-                    'Host' => str_replace('{subdomain}',$subdomain,self::API_HOST),
-                    'X-Cybozu-API-Token' => $token
-                ]
-            ]
-        ]);
+        $base_url = str_replace(['{subdomain}', '{version}'], [$subdomain, 'v1'], self::API_BASE_URL);
+        $client = new GuzzleClient(['base_url' => $base_url]);
+        $this->defaultOptions = [
+            'headers' => [
+                'Host' => str_replace('{subdomain}', $subdomain, self::API_HOST),
+                'X-Cybozu-API-Token' => $token,
+                'Content-Type' => 'application/json',
+            ],
+            'allow_redirects' => false,
+        ];
         $this->subdomain = $subdomain;
         $this->token = $token;
         $this->client = $client;
     }
 
-    public function getClient()
+    public function getToken(): string
+    {
+        return $this->token;
+    }
+
+    public function getSubdomain(): string
+    {
+        return $this->subdomain;
+    }
+
+    public function getClient(): GuzzleClient
     {
         return $this->client;
     }
 
-    public function get($url = null, array $options = [])
+    /**
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function get(string $resource, array $options = []): ResponseInterface
     {
         $params = $this->defaultOptions;
         if (count($options) > 0) {
             $params['json'] = $options;
         }
-        return $this->client->get($url . self::API_URL_EXT, $params);
+        return $this->client->get($resource . self::API_URL_EXT, $params);
     }
 
-    public function head($url = null, array $options = [])
+    /**
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function head(string $resource, array $options = []): ResponseInterface
     {
         $params = $this->defaultOptions;
         if (count($options) > 0) {
             $params['json'] = $options;
         }
-        return $this->client->head($url . self::API_URL_EXT, $params);
+        return $this->client->head($resource . self::API_URL_EXT, $params);
     }
 
-    public function delete($url = null, array $options = [])
+    /**
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function delete(string $resource, array $options = []): ResponseInterface
     {
         $params = $this->defaultOptions;
         if (count($options) > 0) {
             $params['json'] = $options;
         }
-        return $this->client->delete($url . self::API_URL_EXT, $params);
+        return $this->client->delete($resource . self::API_URL_EXT, $params);
     }
 
-    public function put($url = null, array $options = [])
+    /**
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function put(string $resource, array $options = []): ResponseInterface
     {
         $params = $this->defaultOptions;
         if (count($options) > 0) {
             $params['json'] = $options;
         }
-        return $this->client->put($url . self::API_URL_EXT, $params);
+        return $this->client->put($resource . self::API_URL_EXT, $params);
     }
 
-    public function patch($url = null, array $options = [])
+    /**
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function patch(string $resource, array $options = []): ResponseInterface
     {
         $params = $this->defaultOptions;
         if (count($options) > 0) {
             $params['json'] = $options;
         }
-        return $this->client->patch($url . self::API_URL_EXT, $params);
+        return $this->client->patch($resource . self::API_URL_EXT, $params);
     }
 
-    public function post($url = null, array $options = [])
+    /**
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function post(string $resource, array $options = []): ResponseInterface
     {
         $params = $this->defaultOptions;
         if (count($options) > 0) {
             $params['json'] = $options;
         }
-        return $this->client->post($url . self::API_URL_EXT, $params);
+        return $this->client->post($resource . self::API_URL_EXT, $params);
     }
 
-    public function postFile($url = null, PostFile $file)
-    {
-        $request = $this->client->createRequest('POST', $url . self::API_URL_EXT);
-        $postBody = $request->getBody();
-        $postBody->addFile($file);
-        return $this->client->send($request);
-    }
-
-    public function options($url = null, array $options = [])
+    /**
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function postFile(string $resource, UploadedFile $file): ResponseInterface
     {
         $params = $this->defaultOptions;
-        if (count($options) > 0) {
-            $params['json'] = $options;
-        }
-        return $this->client->options($url . self::API_URL_EXT, $params);
+        $params['multipart'] = [
+            [
+                'name' => 'file',
+                'contents' => $file->getStream(),
+                'filename' => $file->getClientFilename(),
+            ],
+        ];
+        return $this->client->post($resource . self::API_URL_EXT, $params);
     }
 }

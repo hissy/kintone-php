@@ -1,12 +1,12 @@
 # The kintone SDK for PHP
 
-[![Build Status](https://travis-ci.org/hissy/kintone-php.svg?branch=master)](https://travis-ci.org/hissy/kintone-php)
-
 cybozu.com にて提供されている [kintone REST API](https://cybozudev.zendesk.com/hc/ja/categories/200147600-kintone-API) を使いやすくするPHP製のライブラリです。
 
 ## 必要条件
 
-PHP 5.4+
+PHP 8.0+
+
+これより古いPHPのバージョンで動作させたい場合、betaブランチをご利用ください。
 
 ## インストール方法
 
@@ -22,7 +22,7 @@ PHP 5.4+
 require 'vendor/autoload.php';
 
 use Kintone\Request;
-use Kintone\Object;
+use Kintone\Base;
 use Kintone\App\App;
 
 // サブドメイン
@@ -52,8 +52,8 @@ if ($res->isSuccess()) {
 $name = (new App($request))->getByID($appID)->getName();
 
 // コマンドとパラメーターを直接指定して情報を取得する方法
-$app = new Object($request);
-$app->setCommand('app');
+$app = new Base($request);
+$app->setResource('app');
 $res = $app->get(['id' => $appID]);
 echo $res->getValue('name'); // 結果は App を使った場合と同じ
 

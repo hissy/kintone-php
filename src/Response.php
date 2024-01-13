@@ -1,60 +1,52 @@
 <?php
+
 namespace Kintone;
 
-use Kintone\Object;
+use Psr\Http\Message\ResponseInterface;
 
 class Response
 {
-    const VERSION = '0.0.1';
-    
-    private $response;
-    private $object;
-    private $exception;
-    
-    private function getResponseObject() { return $this->response; }
-    public function getObject() { return $this->object; }
-    
-    public function setResponse(\GuzzleHttp\Message\Response $response)
-    {
-        $this->response = $response;
-    }
-    
-    public function setObject(Object $object)
+    private ResponseInterface $response;
+    private Base $object;
+
+    public function __construct(Base $object, ResponseInterface $response)
     {
         $this->object = $object;
+        $this->response = $response;
     }
-    
-    public function getStatusCode()
+
+    public function getBaseObject(): Base
     {
-        $response = $this->getResponseObject();
-        if (is_object($response)) {
-            return $response->getStatusCode();
-        }
+        return $this->object;
     }
-    
-    public function isSuccess()
+
+    public function isSuccess(): bool
     {
-        return ($this->getStatusCode() == 200);
+        return $this->getStatusCode() === 200;
     }
-    
-    public function getValue($key)
+
+    public function getStatusCode(): int
     {
-        $response = $this->getResponseObject();
-        if (is_object($response)) {
-            try {
-                $json = $response->json();
-                if (is_array($json) && array_key_exists($key, $json)) {
-                    return $json[$key];
-                }
-            } catch(\GuzzleHttp\Exception\ParseException $e) {
-                
-            }
-        }
+        return $this->getResponseObject()->getStatusCode();
     }
-    
+
+    private function getResponseObject(): ResponseInterface
+    {
+        return $this->response;
+    }
+
     public function __call($name, $arguments)
     {
         $key = lcfirst(substr($name, 3));
         return $this->getValue($key);
+    }
+
+    public function getValue($key)
+    {
+        $response = $this->getResponseObject();
+        $json = json_decode($response->getBody()->getContents(), true);
+        if (array_key_exists($key, $json)) {
+            return $json[$key];
+        }
     }
 }
