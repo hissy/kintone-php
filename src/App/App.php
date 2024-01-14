@@ -1,13 +1,21 @@
 <?php
+
 namespace Kintone\App;
 
-use Kintone\Object;
+use Kintone\Base;
 
-class App extends Object
+/**
+ * 1 件のアプリの情報を取得する
+ * @link https://cybozu.dev/ja/kintone/docs/rest-api/apps/get-app/
+ */
+class App extends Base
 {
-    protected $command = 'app';
-    
-    public function getByID($id)
+    protected string $resource = 'app';
+
+    /**
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getByID(int $id): \Kintone\Response
     {
         return $this->get(['id' => $id]);
     }

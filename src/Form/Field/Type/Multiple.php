@@ -1,15 +1,15 @@
 <?php
+
 namespace Kintone\Form\Field\Type;
 
 use Kintone\Form\Field\FieldType;
-use Kintone\Form\Field\Type\Single;
 
 class Multiple extends FieldType implements \Iterator
 {
-    private $code;
-    private $type;
-    private $fields = array();
-    
+    private string $code;
+    private string $type;
+    private array $fields = [];
+
     public function populateFromArray(array $array = [])
     {
         if (isset($array['code'])) {
@@ -24,65 +24,65 @@ class Multiple extends FieldType implements \Iterator
             }
         }
     }
-    
+
     private function addSubFieldFromArray(array $array = [])
     {
         $sub = new Single();
         $sub->populateFromArray($array);
         $this->fields[] = $sub;
     }
-    
-    public function getSubFields()
+
+    public function getSubFields(): array
     {
         return $this->fields;
     }
-    
-    public function setFieldCode($code)
+
+    public function setFieldCode(string $code)
     {
         $this->code = $code;
     }
-    
-    public function setFieldType($type)
+
+    public function setFieldType(string $type)
     {
         $this->type = $type;
     }
-    
-    public function getFieldCode()
+
+    public function getFieldCode(): string
     {
         return $this->code;
     }
-    
-    public function getFieldType()
+
+    public function getFieldType(): string
     {
         return $this->type;
     }
-    
-    public function isMultiple()
+
+    public function isMultiple(): bool
     {
         return true;
     }
-    
+
     public function current()
     {
         return current($this->fields);
     }
-    
+
     public function key()
     {
         return key($this->fields);
     }
-    
+
     public function next()
     {
         next($this->fields);
     }
-    
+
     public function rewind()
     {
         reset($this->fields);
     }
-    
-    public function valid()
+
+    public function valid(): bool
     {
         return $this->current() !== false;
     }

@@ -1,26 +1,37 @@
 <?php
+
 namespace Kintone\File;
 
-use Kintone\Object;
+use GuzzleHttp\Psr7\UploadedFile;
+use Kintone\Base;
 use Kintone\Response;
-use GuzzleHttp\Post\PostFile;
 
-class File extends Object
+/**
+ * ファイルをダウンロードする
+ * @link https://cybozu.dev/ja/kintone/docs/rest-api/files/download-file/
+ *
+ * ファイルをアップロードする
+ * @link https://cybozu.dev/ja/kintone/docs/rest-api/files/upload-file/
+ */
+class File extends Base
 {
-    protected $command = 'file';
+    protected string $resource = 'file';
 
-    public function postFile(PostFile $postFile)
+    /**
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getByFileKey(string $fileKey): Response
     {
-        $response = new Response();
-        try {
-            $http_response = $this->getRequest()->postFile($this->getCommand(), $postFile);
-            $response->setResponse($http_response);
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
-            if ($e->hasResponse()) {
-                $response->setResponse($e->getResponse());
-            }
-        }
-        $response->setObject($this);
-        return $response;
+        return $this->get(['fileKey' => $fileKey]);
+    }
+
+    /**
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function postFile(UploadedFile $postFile): Response
+    {
+        $http_response = $this->getRequest()->postFile($this->getResource(), $postFile);
+
+        return new Response($this, $http_response);
     }
 }
