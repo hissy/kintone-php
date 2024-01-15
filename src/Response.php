@@ -32,7 +32,7 @@ class Response
         return $this->getResponseObject()->getStatusCode();
     }
 
-    private function getResponseObject(): ResponseInterface
+    public function getResponseObject(): ResponseInterface
     {
         return $this->response;
     }
