@@ -21,4 +21,9 @@ use Kintone\Response;
 class Records extends Base
 {
     protected string $resource = 'records';
+
+    public function postRecords(int $appID, array $records): Response
+    {
+        return $this->post(['app' => $appID, 'records' => $records]);
+    }
 }
