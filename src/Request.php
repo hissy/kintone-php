@@ -20,7 +20,7 @@ class Request
     public function __construct($subdomain, $token)
     {
         $base_url = str_replace(['{subdomain}', '{version}'], [$subdomain, 'v1'], self::API_BASE_URL);
-        $client = new GuzzleClient(['base_url' => $base_url]);
+        $client = new GuzzleClient(['base_uri' => $base_url]);
         $this->defaultOptions = [
             'headers' => [
                 'Host' => str_replace('{subdomain}', $subdomain, self::API_HOST),
