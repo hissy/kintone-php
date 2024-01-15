@@ -25,7 +25,6 @@ class Request
             'headers' => [
                 'Host' => str_replace('{subdomain}', $subdomain, self::API_HOST),
                 'X-Cybozu-API-Token' => $token,
-                'Content-Type' => 'application/json',
             ],
             'allow_redirects' => false,
         ];
