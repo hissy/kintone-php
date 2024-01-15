@@ -36,20 +36,23 @@ $request = new Request($subdomain,$apitoken);
 // アプリ情報の取得
 $appID = 15;
 $app = new App($request);
-$res = $app->getByID($appID);
-
-if ($res->isSuccess()) {
-    // アプリ名の表示
+try {
+    // IDを指定してアプリ情報を取得
+    $res = $app->getByID($appID);
     echo $res->getName();
-} else {
-    // ステータスコードの表示
-    echo $res->getStatusCode();
-    // エラーメッセージの表示
-    echo $res->getMessage();
+} catch (\GuzzleHttp\Exception\ServerException $e) {
+    // 5xxエラーレスポンスの取得
+    echo $e->getResponse()->getBody();
+} catch (\GuzzleHttp\Exception\ClientException $e) {
+    // 4xxエラーレスポンスの取得
+    echo $e->getResponse()->getBody();
+} catch (\GuzzleHttp\Exception\GuzzleException $e) {
+    echo get_class($e) . ': ' . $e->getMessage();
 }
 
 // 短縮型
 $name = (new App($request))->getByID($appID)->getName();
+echo $name;
 
 // コマンドとパラメーターを直接指定して情報を取得する方法
 $app = new Base($request);
