@@ -1,28 +1,27 @@
 <?php
 namespace Kintone\Tests;
 
+use GuzzleHttp\Psr7\Response as GuzzleResponse;
+use Kintone\Request;
 use Kintone\Response;
-use Kintone\Object;
-use \GuzzleHttp\Message\Response as GuzzleResponse;
+use Kintone\Base;
+use PHPUnit\Framework\TestCase;
 
-class ObjectTest extends \PHPUnit_Framework_TestCase
+class ObjectTest extends TestCase
 {
     public function testSetRequest()
     {
         $httpResponse = new GuzzleResponse(200);
 
-        $response = new Response();
-        $response->setResponse($httpResponse);
+        $request = $this->createMock(Request::class);
+        $request->expects($this->once())
+            ->method('get')
+            ->willReturn(new GuzzleResponse(200));
 
-        $request = $this->getMockBuilder('\\Kintone\\Request')
-                        ->disableOriginalConstructor()
-                        ->getMock();
-
-        $request->method('get')
-                ->willReturn($httpResponse);
-
-        $obj = new Object($request);
+        $obj = new Base($request);
         $requestedResponse = $obj->get();
+
+        $response = new Response($obj, $httpResponse);
 
         $this->assertEquals($response->getStatusCode(), $requestedResponse->getStatusCode());
     }
@@ -32,18 +31,14 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
         $url = 'foo';
         $params = ['foo' => 'bar'];
 
-        $request = $this->getMockBuilder('\\Kintone\\Request')
-                        ->disableOriginalConstructor()
-                        ->setMethods(array('get'))
-                        ->getMock();
-
+        $request = $this->createMock(Request::class);
         $request->expects($this->once())
-                ->method('get')
-                ->with($url,$params)
-                ->willReturn(new GuzzleResponse(200));
+            ->method('get')
+            ->with($url,$params)
+            ->willReturn(new GuzzleResponse(200));
 
-        $obj = new Object($request);
-        $obj->setCommand($url);
+        $obj = new Base($request);
+        $obj->setResource($url);
         $obj->get($params);
     }
 
@@ -52,18 +47,14 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
         $url = 'foo';
         $params = ['foo' => 'bar'];
 
-        $request = $this->getMockBuilder('\\Kintone\\Request')
-                        ->disableOriginalConstructor()
-                        ->setMethods(array('post'))
-                        ->getMock();
-
+        $request = $this->createMock(Request::class);
         $request->expects($this->once())
-                ->method('post')
-                ->with($url,$params)
-                ->willReturn(new GuzzleResponse(200));
+            ->method('post')
+            ->with($url,$params)
+            ->willReturn(new GuzzleResponse(200));
 
-        $obj = new Object($request);
-        $obj->setCommand($url);
+        $obj = new Base($request);
+        $obj->setResource($url);
         $obj->post($params);
     }
 }

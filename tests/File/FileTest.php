@@ -1,27 +1,33 @@
 <?php
 namespace Kintone\Tests\File;
 
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\UploadedFile;
 use Kintone\File\File;
-use \GuzzleHttp\Post\PostFile;
-use \GuzzleHttp\Message\Response as GuzzleResponse;
+use Kintone\Request;
+use PHPUnit\Framework\TestCase;
 
-class FileTest extends \PHPUnit_Framework_TestCase
+class FileTest extends TestCase
 {
     public function testPostFile()
     {
-        $file = new PostFile('file', fopen(__FILE__, 'r'));
+        $file = new UploadedFile(
+            __DIR__ . '/SamplePDFFile.pdf',
+            filesize(__DIR__ . '/SamplePDFFile.pdf'),
+            UPLOAD_ERR_OK,
+            'SamplePDFFile.pdf',
+            'application/pdf'
+        );
 
-        $request = $this->getMockBuilder('\\Kintone\\Request')
-                        ->disableOriginalConstructor()
-                        ->setMethods(array('postFile'))
-                        ->getMock();
+        $observer = $this->createMock(Request::class);
+        $observer->expects($this->once())
+                 ->method('postFile')
+                 ->with('file', $file)
+                 ->willReturn(new Response(200));
 
-        $request->expects($this->once())
-                ->method('postFile')
-                ->with('file', $file)
-                ->willReturn(new GuzzleResponse(200));
+        $obj = new File($observer);
+        $response = $obj->postFile($file);
 
-        $obj = new File($request);
-        $obj->postFile($file);
+        $this->assertTrue($response->isSuccess());
     }
 }

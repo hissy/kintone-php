@@ -25,22 +25,22 @@ class FieldList implements \Iterator
         return $type;
     }
 
-    public function current()
+    public function current(): mixed
     {
         return current($this->properties);
     }
 
-    public function key()
+    public function key(): mixed
     {
         return key($this->properties);
     }
 
-    public function next()
+    public function next(): void
     {
         next($this->properties);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         reset($this->properties);
     }

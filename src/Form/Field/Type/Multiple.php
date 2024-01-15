@@ -10,7 +10,7 @@ class Multiple extends FieldType implements \Iterator
     private string $type;
     private array $fields = [];
 
-    public function populateFromArray(array $array = [])
+    public function populateFromArray(array $array = []): void
     {
         if (isset($array['code'])) {
             $this->setFieldCode($array['code']);
@@ -25,7 +25,7 @@ class Multiple extends FieldType implements \Iterator
         }
     }
 
-    private function addSubFieldFromArray(array $array = [])
+    private function addSubFieldFromArray(array $array = []): void
     {
         $sub = new Single();
         $sub->populateFromArray($array);
@@ -37,12 +37,12 @@ class Multiple extends FieldType implements \Iterator
         return $this->fields;
     }
 
-    public function setFieldCode(string $code)
+    public function setFieldCode(string $code): void
     {
         $this->code = $code;
     }
 
-    public function setFieldType(string $type)
+    public function setFieldType(string $type): void
     {
         $this->type = $type;
     }
@@ -62,22 +62,22 @@ class Multiple extends FieldType implements \Iterator
         return true;
     }
 
-    public function current()
+    public function current(): mixed
     {
         return current($this->fields);
     }
 
-    public function key()
+    public function key(): mixed
     {
         return key($this->fields);
     }
 
-    public function next()
+    public function next(): void
     {
         next($this->fields);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         reset($this->fields);
     }

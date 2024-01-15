@@ -3,11 +3,12 @@ namespace Kintone\Tests\Form\Field;
 
 use Kintone\Form\Field\FieldList;
 use GuzzleHttp\Utils;
+use PHPUnit\Framework\TestCase;
 
-class FieldListTest extends \PHPUnit_Framework_TestCase
+class FieldListTest extends TestCase
 {
     // @link https://cybozudev.zendesk.com/hc/ja/articles/201941834-%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A0%E8%A8%AD%E8%A8%88%E6%83%85%E5%A0%B1%E5%8F%96%E5%BE%97
-    private $json = '{
+    private string $json = '{
         "properties": [
             {
                 "code": "string_1",

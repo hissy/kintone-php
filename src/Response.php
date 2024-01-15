@@ -9,6 +9,8 @@ class Response
     private ResponseInterface $response;
     private Base $object;
 
+    private array $json;
+
     public function __construct(Base $object, ResponseInterface $response)
     {
         $this->object = $object;
@@ -43,10 +45,14 @@ class Response
 
     public function getValue($key)
     {
-        $response = $this->getResponseObject();
-        $json = json_decode($response->getBody()->getContents(), true);
-        if (array_key_exists($key, $json)) {
-            return $json[$key];
+        if (empty($this->json)) {
+            $this->json = json_decode($this->getResponseObject()->getBody()->getContents(), true);
         }
+
+        if (array_key_exists($key, $this->json)) {
+            return $this->json[$key];
+        }
+
+        return null;
     }
 }
